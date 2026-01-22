@@ -18,15 +18,26 @@ description: 使用 Jira MCP 工具将 Jira 问题转换到新的状态。当你
    - 如果字段不存在或为空，才用默认值填充
 5. **执行转换**：调用 `jira_transition_issue`，传入 issue key 和 transition ID
 
-## 参数
+## 简化输入格式
+
+支持自然语言输入：
+```
+/jira-transition 6415 rd in progress
+/jira-transition OR-6415 code complete
+/jira-transition 6415 ready for testing
+```
+
+系统会自动：
+1. 补全 issue_key 前缀（6415 → OR-6415）
+2. 识别目标状态（如 "rd in progress"）
+3. 自动执行多步骤转换到目标状态
+
+## 参数（完整格式）
 
 - `issue_key`: Jira 问题键（如 OR-6415, PROJ-123），支持纯数字会自动补全 OR 前缀
 - `status`: 目标状态名称（如 "已完成"、"Done"、"In Progress"）
-- `transition_id`: 可选，直接指定 transition ID（优先级高于 status）
-
-## 自动补全 issue_key
-
-如果用户输入纯数字（如 "6415"），自动补全为 "OR-6415"。
+- `target_final_status`: 最终目标状态（完整写法）
+- `transition_id`: 可选，直接指定 transition ID
 
 ## 自动获取信息
 
