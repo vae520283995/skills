@@ -12,7 +12,10 @@ description: 使用 Jira MCP 工具将 Jira 问题转换到新的状态。当你
 1. **获取问题详情**：使用 `jira_get_issue` 获取问题的当前状态、标题、负责人等信息
 2. **获取可用转换**：使用 `jira_get_transitions` 获取问题的可用状态转换
 3. **匹配目标状态**：根据用户提供的 `status` 找到对应的 transition ID
-4. **预处理必填字段**：对于已知的需要必填字段的 transition（如 "Start working"），**先更新字段再执行转换**
+4. **预处理必填字段**：
+   - 对于需要必填字段的 transition（如 "Start working"）
+   - **先查询问题是否已有这些字段的值**
+   - 如果字段不存在或为空，才用默认值填充
 5. **执行转换**：调用 `jira_transition_issue`，传入 issue key 和 transition ID
 
 ## 参数
