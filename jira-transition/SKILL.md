@@ -93,8 +93,15 @@ Backlog → Requirement Review → RD Review → RD In Progress → Code Complet
 
 **处理必填字段的技巧**：
 对于需要必填自定义字段的 transition（如 Start working），需要：
-1. 先用 `jira_update_issue` 更新字段
-2. 再执行 `jira_transition_issue`
+
+1. **执行 transition 前**：
+   - 查询问题的自定义字段（如 `customfield_10171`）
+   - 如果字段不存在或为空 → 用默认值填充
+   - 如果字段已存在 → 直接执行 transition
+
+2. **如果失败**（某些 transition 配置特殊）：
+   - 同时填充 `customfield_10171` 和 `customfield_10194`
+   - 再次执行 transition
 
 **使用示例**：
 ```
