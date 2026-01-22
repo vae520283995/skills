@@ -89,14 +89,14 @@ Backlog → Requirement Review → RD Review → RD In Progress → Code Complet
 
 **自动填充字段**（当需要时）：
 - `Original Estimate`: 默认填 "1d"
-- `QA Testing Days`: 默认填 id "10025" (对应值 1)
+- `QA Testing Days`: 默认填数字 `1`（对应 `customfield_10194`）
 
 **处理必填字段的技巧**：
 对于需要必填自定义字段的 transition（如 Start working），需要：
 
 1. **执行 transition 前**：
-   - 查询问题的自定义字段（如 `customfield_10171`）
-   - 如果字段不存在或为空 → 用默认值填充
+   - 查询数字类型字段 `customfield_10194`（QA Testing Days）
+   - 如果字段不存在或为空 → 用默认值 `1` 填充
    - 如果字段已存在 → 直接执行 transition
 
 2. **如果失败**（某些 transition 配置特殊）：
