@@ -20,9 +20,13 @@ description: 使用 Jira MCP 工具将 Jira 问题转换到新的状态。当你
 
 ## 参数
 
-- `issue_key`: Jira 问题键（如 OR-6415, PROJ-123）
+- `issue_key`: Jira 问题键（如 OR-6415, PROJ-123），支持纯数字会自动补全 OR 前缀
 - `status`: 目标状态名称（如 "已完成"、"Done"、"In Progress"）
 - `transition_id`: 可选，直接指定 transition ID（优先级高于 status）
+
+## 自动补全 issue_key
+
+如果用户输入纯数字（如 "6415"），自动补全为 "OR-6415"。
 
 ## 自动获取信息
 
@@ -95,9 +99,11 @@ Backlog → Requirement Review → RD Review → RD In Progress → Code Complet
 对于需要必填自定义字段的 transition（如 Start working），需要：
 
 1. **执行 transition 前**：
-   - 查询数字类型字段 `customfield_10194`（QA Testing Days）
-   - 如果字段不存在或为空 → 用默认值 `1` 填充
-   - 如果字段已存在 → 直接执行 transition
+   - 对于 "Start working" (RD In Progress) transition：
+     - 查询 `customfield_10194`（QA Testing Days）
+     - 如果字段不存在或为空 → 用 `jira_update_issue` 填值 `1`
+     - 再执行 transition
+   - 其他 transition：直接执行
 
 2. **如果失败**（某些 transition 配置特殊）：
    - 同时填充 `customfield_10171` 和 `customfield_10194`
